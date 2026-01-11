@@ -6,5 +6,12 @@
     "unity": "2021.3",
     "author": {
         "name": "Eakrawi Chaisuriya"
-    }
+    },
+    "samples" : [
+        {
+            "displayName": "Character Movement Sample",
+            "description": "A sample prefab and scripts demonstrating character movement.",
+            "path": "Samples~/Example"
+        }
+    ]
 }
