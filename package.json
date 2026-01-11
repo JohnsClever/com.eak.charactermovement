@@ -1,0 +1,10 @@
+{
+    "name": "com.eak.charactermovement",
+    "version": "1.0.0",
+    "displayName": "Eakrawi Character Movement",
+    "description": "Module to move a character",
+    "unity": "2021.3",
+    "author": {
+        "name": "Eakrawi Chaisuriya"
+    }
+}
