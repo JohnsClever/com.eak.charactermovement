@@ -21,7 +21,7 @@ namespace com.eak.charactermovement
         {
             if (Physics.BoxCast(
                   root.position,
-                  new Vector3(radius, 0.01f, radius),
+                  new Vector3(radius, 0.05f, radius),
                   Vector3.down,
                   out var hit,
                   root.rotation,

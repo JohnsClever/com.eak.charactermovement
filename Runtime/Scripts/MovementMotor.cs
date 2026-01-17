@@ -9,6 +9,7 @@ namespace com.eak.charactermovement
         List<IRotatable> rotatableComponents = new();
         List<IMoveModifier> moveModifiers = new();
         [SerializeField] private LayerMask floorMask;
+        [SerializeField] private CharacterController characterController;
         public MoveByGravity GravityModule { get; private set; }
         void Start()
         {
@@ -60,7 +61,10 @@ namespace com.eak.charactermovement
         public void MoveWith(IMoveable moveableComponent, Vector3 input)
         {
             Vector3 result = moveableComponent.Move(transform.position, input);
-            transform.position = result;
+            if (characterController)
+                characterController.Move(result - transform.position);
+            else
+                transform.position = result;
         }
         public void RotateWith(IRotatable rotatableComponent, Vector3 input)
         {
@@ -70,7 +74,10 @@ namespace com.eak.charactermovement
         {
             foreach (var modifier in moveModifiers)
             {
-                transform.position = modifier.Modify(transform.position);
+                if (characterController)
+                    characterController.Move(modifier.Modify(transform.position) - transform.position);
+                else
+                    transform.position = modifier.Modify(transform.position);
             }
         }
     }
