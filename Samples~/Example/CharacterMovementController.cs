@@ -4,21 +4,28 @@ namespace com.eak
 {
     public class CharacterMovementController : MonoBehaviour
     {
-        [SerializeField] Camera mainCamera;
-        [SerializeField] MovementMotor movementMotor;
-        MoveDirectionByCamera moveDirectionByCamera;
-        MoveTeleport teleportModule = new MoveTeleport();
-        RotateTowardMovement rotateTowardMovement;
-        Jump jumpModule;
-        void Start()
+        [SerializeField] protected Camera mainCamera;
+        [SerializeField] protected MovementMotor movementMotor;
+        protected MoveDirectionByCamera moveDirectionByCamera;
+        protected MoveTeleport teleportModule = new MoveTeleport();
+        protected RotateTowardMovement rotateTowardMovement;
+        protected Jump jumpModule;
+        protected MoveByForce forceModule;
+        protected virtual void Start()
         {
+            // init varaibles
+            if (mainCamera == null)
+                mainCamera = Camera.main;
             moveDirectionByCamera = new MoveDirectionByCamera(mainCamera.transform, 5f);
             rotateTowardMovement = new RotateTowardMovement(mainCamera.transform, 10f);
             jumpModule = new Jump(movementMotor.GravityModule);
-            
+            forceModule = new MoveByForce();
+
+            // add movement components to motor
             movementMotor.AddMovementType(moveDirectionByCamera);
             movementMotor.AddRotatationType(rotateTowardMovement);
             movementMotor.AddMoveModifier(jumpModule);
+            movementMotor.AddMoveModifier(forceModule);
         }
         void Update()
         {
@@ -30,7 +37,6 @@ namespace com.eak
             {
                 if (movementMotor.GravityModule.IsGrounded(out var groundPoint))
                     jumpModule.DoJump();
-                // TeleportToPosition(new Vector3(0, 1, 0));
             }
         }
         public void MovementHandler(Vector3 input)
@@ -41,6 +47,10 @@ namespace com.eak
         public void TeleportToPosition(Vector3 targetPosition)
         {
             movementMotor.MoveWith(teleportModule, targetPosition);
+        }
+        public void AddForce(Vector3 force, float duration = 0.1f)
+        {
+            forceModule.AddForce(force, duration);
         }
     }
 }
